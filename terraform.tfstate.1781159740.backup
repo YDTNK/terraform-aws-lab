@@ -1,0 +1,60 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.5",
+  "serial": 109,
+  "lineage": "dbdaa32a-3dcc-9044-6b54-006858c3814c",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-1:712532372464:vpc/vpc-0d8bd4635383deba1",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-0823a669c0a626b16",
+            "default_route_table_id": "rtb-0de9a50e2abb8b1ee",
+            "default_security_group_id": "sg-0161b58d6a36196fb",
+            "dhcp_options_id": "dopt-0ca457ac6937127e6",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-0d8bd4635383deba1",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-0de9a50e2abb8b1ee",
+            "owner_id": "712532372464",
+            "region": "ap-northeast-1",
+            "tags": {
+              "Name": "terraform-vpc"
+            },
+            "tags_all": {
+              "Name": "terraform-vpc"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "712532372464",
+            "id": "vpc-0d8bd4635383deba1",
+            "region": "ap-northeast-1"
+          },
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "create_before_destroy": true
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

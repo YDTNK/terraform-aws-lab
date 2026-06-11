@@ -1,7 +1,5 @@
 .terraform/
 *.tfstate
-*.tfstate.*
-*.tfplan
+*.tfstate.backup
+terraform.lock.hcl
 crash.log
-*.pem
-terraform-provider-*

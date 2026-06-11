@@ -170,7 +170,7 @@ resource "aws_instance" "nginx" {
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
 
-  key_name = "my-key"
+  key_name = aws_key_pair.main.key_name
 
   user_data = <<-EOF
 #!/bin/bash
@@ -247,3 +247,12 @@ resource "aws_lb_listener" "listener" {
 output "public_ip" {
   value = aws_instance.nginx.public_ip
 }
+
+# ----------------------------
+# KeyPair
+# ----------------------------
+resource "aws_key_pair" "main" {
+  key_name   = "terraform-key"
+  public_key = file("~/.ssh/terraform-key.pub")
+}
+

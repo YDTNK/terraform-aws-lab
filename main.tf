@@ -66,6 +66,29 @@ resource "aws_subnet" "public_b" {
 }
 
 # ----------------------------
+# Private Subnet
+# ----------------------------
+resource "aws_subnet" "private_a" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "ap-northeast-1a"
+
+  tags = {
+    Name = "private-subnet-a"
+  }
+}
+
+resource "aws_subnet" "private_c" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "ap-northeast-1c"
+
+  tags = {
+    Name = "private-subnet-c"
+  }
+}
+
+# ----------------------------
 # Route Table
 # ----------------------------
 resource "aws_route_table" "public_rt" {
@@ -89,6 +112,28 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "public_b" {
   subnet_id      = aws_subnet.public_b.id
   route_table_id = aws_route_table.public_rt.id
+}
+
+
+# ----------------------------
+# Private Route Table
+# ----------------------------
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "private-rt"
+  }
+}
+
+resource "aws_route_table_association" "private_a" {
+  subnet_id      = aws_subnet.private_a.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
+resource "aws_route_table_association" "private_c" {
+  subnet_id      = aws_subnet.private_c.id
+  route_table_id = aws_route_table.private_rt.id
 }
 
 # ----------------------------
@@ -161,6 +206,48 @@ resource "aws_security_group" "nginx_sg" {
 }
 
 # ----------------------------
+# Security Group（RDS）
+# ----------------------------
+resource "aws_security_group" "rds_sg" {
+  name   = "rds-sg"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.nginx_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "rds-sg"
+  }
+}
+
+# ----------------------------
+# RDS Subnet Group
+# ----------------------------
+resource "aws_db_subnet_group" "rds_subnet" {
+  name = "rds-subnet-group"
+
+  subnet_ids = [
+    aws_subnet.private_a.id,
+    aws_subnet.private_c.id
+  ]
+
+  tags = {
+    Name = "rds-subnet-group"
+  }
+}
+
+# ----------------------------
 # EC2 Instance
 # ----------------------------
 resource "aws_instance" "nginx" {
@@ -200,6 +287,35 @@ EOF
     ignore_changes = [
       user_data
     ]
+  }
+}
+
+# ----------------------------
+# RDS（MySQL）
+# ----------------------------
+resource "aws_db_instance" "mysql" {
+  identifier = "terraform-mysql"
+
+  engine         = "mysql"
+  engine_version = "8.0"
+
+  instance_class = "db.t3.micro"
+
+  allocated_storage = 20
+
+  db_name  = "appdb"
+  username = "admin"
+  password = "StrongPassword123!"
+
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+
+  skip_final_snapshot = true
+
+  publicly_accessible = false
+
+  tags = {
+    Name = "terraform-mysql"
   }
 }
 

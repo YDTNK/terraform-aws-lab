@@ -4,7 +4,7 @@
 resource "aws_vpc" "this" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
-  enable_dns_hostnames  = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = "terraform-vpc"
@@ -54,9 +54,9 @@ resource "aws_subnet" "public_c" {
 # Private Subnet (AZ-A)
 # =========================
 resource "aws_subnet" "private_a" {
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = "10.0.11.0/24"
-  availability_zone       = "ap-northeast-1a"
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = "10.0.11.0/24"
+  availability_zone = "ap-northeast-1a"
 
   # 重要：Privateは必ずfalse
   map_public_ip_on_launch = false
@@ -70,9 +70,9 @@ resource "aws_subnet" "private_a" {
 # Private Subnet (AZ-C)
 # =========================
 resource "aws_subnet" "private_c" {
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = "10.0.12.0/24"
-  availability_zone       = "ap-northeast-1c"
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = "10.0.12.0/24"
+  availability_zone = "ap-northeast-1c"
 
   map_public_ip_on_launch = false
 
@@ -89,7 +89,7 @@ resource "aws_route_table" "public_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.igw.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {

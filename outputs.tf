@@ -1,11 +1,11 @@
 output "alb_dns" {
-  value = aws_lb.alb.dns_name
+  value = module.app.alb_dns
 }
 
-output "private_subnet_a_id" {
-  value = module.vpc.private_subnet_a_id
+output "public_subnet_ids" {
+  value = module.vpc.public_subnet_ids
 }
 
-output "private_subnet_c_id" {
-  value = module.vpc.private_subnet_c_id
+output "private_subnet_ids" {
+  value = module.vpc.private_subnet_ids
 }

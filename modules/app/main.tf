@@ -33,8 +33,8 @@ resource "aws_launch_template" "this" {
   image_id      = var.ami_id
   instance_type = var.instance_type
 
-user_data = filebase64("${path.module}/userdata.sh")  
-vpc_security_group_ids = [aws_security_group.nginx.id]
+  user_data              = filebase64("${path.module}/userdata.sh")
+  vpc_security_group_ids = [aws_security_group.nginx.id]
 }
 
 resource "aws_autoscaling_group" "this" {

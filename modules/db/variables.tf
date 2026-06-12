@@ -10,4 +10,5 @@ variable "instance_class" {}
 variable "username" {}
 variable "password" {}
 
-variable "rds_sg_id" {}
+variable "vpc_id" {}
+variable "app_sg_id" {}

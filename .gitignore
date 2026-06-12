@@ -3,3 +3,8 @@
 *.tfstate.backup
 terraform.lock.hcl
 crash.log
+.terraform/
+*.tfstate
+*.tfstate.*
+*.backup
+backup_now/

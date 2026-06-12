@@ -24,7 +24,11 @@ resource "aws_lb_target_group" "tg" {
   vpc_id   = module.vpc.vpc_id
 
   health_check {
-    path = "/"
+    path                = "/health"
+    matcher             = "200-399"
+    interval            = 30
+    healthy_threshold   = 2
+    unhealthy_threshold = 5
   }
 
   tags = {

@@ -39,7 +39,7 @@ module "db" {
   instance_class = "db.t3.micro"
 
   username = "admin"
-  password = "password12345"
+  password = var.db_password
 
   vpc_id    = module.vpc.vpc_id
   app_sg_id = module.app.nginx_sg_id

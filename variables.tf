@@ -9,3 +9,9 @@ variable "instance_type" {
 variable "key_name" {
   default = "my-key"
 }
+
+variable "db_password" {
+  type        = string
+  description = "Password for the RDS MySQL instance"
+  sensitive   = true
+}

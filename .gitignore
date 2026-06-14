@@ -9,3 +9,5 @@ crash.log
 *.backup
 backup_now/
 .DS_Store
+*.tfvars
+*.tfvars.json

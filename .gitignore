@@ -8,3 +8,4 @@ crash.log
 *.tfstate.*
 *.backup
 backup_now/
+.DS_Store

@@ -14,25 +14,38 @@
 - S3 Backend / State Lock によるRemote State管理
 
 ---
-
 ## アーキテクチャ図
 
-    Internet
-       |
-       v
-    [ Application Load Balancer ]
-       |  Public Subnet / Multi-AZ
-       |
-       v
-    [ Target Group ]
-       |
-       v
-    [ Auto Scaling Group ]
-       |  Private Subnet / Multi-AZ
-       |
-       v
-    [ Amazon RDS MySQL ]
-          DB Subnet / Multi-AZ
+```mermaid
+flowchart TB
+    internet([Internet])
+
+    subgraph vpc["VPC 10.0.0.0/16"]
+        subgraph public["Public Subnet / Multi-AZ"]
+            alb["Application Load Balancer"]
+            nat["NAT Gateway"]
+        end
+
+        subgraph private["Private Subnet / Multi-AZ"]
+            asg["Auto Scaling Group"]
+            ec2a["EC2 / nginx AZ-A"]
+            ec2c["EC2 / nginx AZ-C"]
+        end
+
+        subgraph db["DB Subnet / Multi-AZ"]
+            rds["Amazon RDS MySQL"]
+        end
+    end
+
+    internet --> alb
+    alb --> asg
+    asg --> ec2a
+    asg --> ec2c
+    ec2a --> rds
+    ec2c --> rds
+    ec2a --> nat
+    ec2c --> nat
+```
 
 ---
 

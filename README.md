@@ -340,3 +340,17 @@ Terraformのバージョンによっては、`dynamodb_table` に非推奨警告
 単なるリソース作成ではなく、ネットワーク分離、Security Group設計、Auto Scaling、RDS配置、Remote State管理まで含めて、実務に近いIaC構成を意識しています。
 
 今後はREADMEや構成図の改善、CI/CD、自動テスト、Secret管理を追加し、より実務レベルのTerraformプロジェクトへ発展させます。
+
+### スクリーンショット
+
+#### Terraform plan
+
+![Terraform plan no changes](screenshots/01_terraform_plan_no_changes.png)
+
+#### Remote State
+
+![Remote State S3](screenshots/02_remote_state_s3.png)
+
+#### GitHub Actions
+
+![GitHub Actions Success](screenshots/03_github_actions_success.png)

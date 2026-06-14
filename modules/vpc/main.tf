@@ -82,6 +82,36 @@ resource "aws_subnet" "private_c" {
 }
 
 # =========================
+# DB Subnet (AZ-A)
+# =========================
+resource "aws_subnet" "db_a" {
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = "10.0.21.0/24"
+  availability_zone = "ap-northeast-1a"
+
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "terraform-vpc-db-a"
+  }
+}
+
+# =========================
+# DB Subnet (AZ-C)
+# =========================
+resource "aws_subnet" "db_c" {
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = "10.0.22.0/24"
+  availability_zone = "ap-northeast-1c"
+
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "terraform-vpc-db-c"
+  }
+}
+
+# =========================
 # Public Route Table
 # =========================
 resource "aws_route_table" "public_rt" {

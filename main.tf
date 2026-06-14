@@ -30,7 +30,10 @@ module "db" {
 
   db_subnet_group_name = "terraform-db-subnet-group"
 
-  private_subnet_ids = module.vpc.private_subnet_ids
+  db_subnet_ids = concat(
+    module.vpc.private_subnet_ids,
+    module.vpc.db_subnet_ids
+  )
 
   db_name        = "terraform-mysql"
   instance_class = "db.t3.micro"

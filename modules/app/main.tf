@@ -28,10 +28,41 @@ resource "aws_lb_listener" "this" {
   }
 }
 
+resource "aws_iam_role" "ssm_role" {
+  name = "nginx-ssm-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "ssm_profile" {
+  name = "nginx-ssm-instance-profile"
+  role = aws_iam_role.ssm_role.name
+}
+
 resource "aws_launch_template" "this" {
   name_prefix   = "nginx-lt-"
   image_id      = var.ami_id
   instance_type = var.instance_type
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ssm_profile.name
+  }
 
   user_data              = filebase64("${path.module}/userdata.sh")
   vpc_security_group_ids = [aws_security_group.nginx.id]
@@ -79,13 +110,6 @@ resource "aws_security_group" "nginx" {
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
